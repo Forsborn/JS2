@@ -1,5 +1,46 @@
 'use strict';
 
+const API = 'https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses';
+
+const fetch = (method, url, cb) => {
+  let xhr;
+  if (window.XMLHttpRequest) {
+    xhr = new XMLHttpRequest();
+  } else if (window.ActiveXObject) {
+    xhr = new ActiveXObject ("Microsoft.XMLHTTP");
+  }
+
+  xhr.onreadystatechange = function() {
+    if (xhr.readyState === xhr.DONE && xhr.status === 200) {
+      cb(JSON.parse(xhr.response));
+    }
+  }
+  xhr.open(method, url);
+
+  xhr.send();
+}
+
+fetch('GET', API, (data) => {
+  console.log(data);
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 const goods = [
     { title: 'Shirt', price: 150 },
     { title: 'Socks', price: 50 },
@@ -50,6 +91,10 @@ const goods = [
       });
       document.querySelector('.header__right__div').innerHTML = html;
     }
+    sumTotal() {
+      this.fetchGoods();
+      return this.goods.reduce ((acc, {price}) => acc += price, 0);
+    }
   }
   
   const list = new GoodsList();
@@ -61,7 +106,7 @@ let basket = document.querySelector('.header__right__div');
 basket.insertAdjacentHTML("beforeend", `
             <div class="basket__total">
                 <p>TOTAL</p>
-                <p>$${this.sum}</p>
+                <p>$${list.sumTotal()}</p>
             </div>
             <div class="basket__check-cart">
                 <a href="#" class="basket__checkout">Checkout</a>
@@ -69,7 +114,16 @@ basket.insertAdjacentHTML("beforeend", `
             <div class="basket__check-cart">
                 <a href="#" class="basket__cart">Go to cart</a>
             </div>
-        `);
+        `
+);
+// слушатель на удаление товара из корзины
+let closeBtn = document.querySelectorAll('.fa-times-circle');
+closeBtn.forEach(function(btn) {
+  btn.addEventListener('click', function (event) {} )
+});
+
+
+
 
 
         

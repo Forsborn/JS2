@@ -2,44 +2,48 @@
 
 const API = 'https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses';
 
-const fetch = (method, url, cb) => {
-  let xhr;
-  if (window.XMLHttpRequest) {
-    xhr = new XMLHttpRequest();
-  } else if (window.ActiveXObject) {
-    xhr = new ActiveXObject ("Microsoft.XMLHTTP");
-  }
+// const fetch = (method, url, cb) => {
+//   let xhr;
+//   if (window.XMLHttpRequest) {
+//     xhr = new XMLHttpRequest();
+//   } else if (window.ActiveXObject) {
+//     xhr = new ActiveXObject ("Microsoft.XMLHTTP");
+//   }
 
-  xhr.onreadystatechange = function() {
-    if (xhr.readyState === xhr.DONE && xhr.status === 200) {
-      cb(JSON.parse(xhr.response));
-    }
-  }
-  xhr.open(method, url);
+//   xhr.onreadystatechange = function() {
+//     if (xhr.readyState === xhr.DONE && xhr.status === 200) {
+//       cb(JSON.parse(xhr.response));
+//     }
+//   }
+//   xhr.open(method, url);
 
-  xhr.send();
-}
+//   xhr.send();
+// }
 
-fetch('GET', API, (data) => {
-  console.log(data);
+// fetch('GET', API, (data) => {
+//   console.log(data);
+// });
+
+const promise = new Promise ((resolve, reject) => { // проверка на браузер через промис
+	let xhr;
+	if ( xhr = window.XMLHttpRequest) { 
+		return resolve(xhr);
+	} else if (xhr = window.ActiveXObject) {
+		return resolve(xhr);
+	} else if (xhr != window.XMLHttpRequest && xhr != window.ActiveXObject) { //  <= надо ли вообще делать эту проверку?
+		return reject();
+	}
+
 });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+promise.then((xhr)=>{
+	xhr.onreadystatechange = function() {
+		if (xhr.readyState === xhr.DONE && xhr.status === 200) {
+			return JSON.parse(xhr.response);
+		}
+	}
+	console.log(xhr.status); //выводит андефайн
+});
 
 const goods = [
     { title: 'Shirt', price: 150 },
@@ -121,9 +125,3 @@ let closeBtn = document.querySelectorAll('.fa-times-circle');
 closeBtn.forEach(function(btn) {
   btn.addEventListener('click', function (event) {} )
 });
-
-
-
-
-
-        

@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700,900&display=swap" rel="stylesheet">
     <script src="https://kit.fontawesome.com/50c0e95d5c.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 </head>
 <body>
     <header class="header center">
@@ -37,18 +38,18 @@
                         </ul>
                     </div>
                 </details>
-                <input type="text" placeholder="Search for Item..." class="placehold__main">
+                <input type="text" placeholder="Search for Item..." class="placehold__main" v-model="title"> <!--vue model -->
                 <button type="submit" class="submit-but"><img src="img/search.png" alt="search"></button>
             </form>
         </div>
         <div class="header__right">
-            <details class="">
+            <details open>
                 <summary class="fix_sum">
                     <a href="./shopping-cart.html" class="header__basket__a">
                         <img src="img/basket.png" alt="basket" class="header__basket">
                     </a>
                 </summary>
-                <div class="header__right__div">
+                <div class="header__right__div" >
                     <!-- <div class="basket__product">
                         <div class="img__box"><a href="#" class="img__box__link" ></a></div>
                         <div class="text__box">

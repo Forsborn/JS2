@@ -24,32 +24,36 @@ const API = 'https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-a
 //   console.log(data);
 // });
 
-const promise = new Promise ((resolve, reject) => { // проверка на браузер через промис
-	let xhr;
-	if ( xhr = window.XMLHttpRequest) { 
-		return resolve(xhr);
-	} else if (xhr = window.ActiveXObject) {
-		return resolve(xhr);
-	} else if (xhr != window.XMLHttpRequest && xhr != window.ActiveXObject) { //  <= надо ли вообще делать эту проверку?
-		return reject();
-	}
-
-});
-
-promise.then((xhr)=>{
-	xhr.onreadystatechange = function() {
-		if (xhr.readyState === xhr.DONE && xhr.status === 200) {
-			return JSON.parse(xhr.response);
+function makeGETRequest(url) {
+		return new Promise ((resolve, reject) => { // проверка на браузер через промис
+		let xhr;
+		if ( xhr = window.XMLHttpRequest) { 
+			return resolve(xhr);
+		} else if (xhr = window.ActiveXObject) {
+			return resolve(xhr);
+		} else if (xhr != window.XMLHttpRequest && xhr != window.ActiveXObject) { //  <= надо ли вообще делать эту проверку?
+			return reject();
 		}
-	}
-	console.log(xhr.status); //выводит андефайн
-});
+
+		xhr.onreadystatechange = function() {
+			if (xhr.readyState === 4 && xhr.status === 200) {
+				resolve(xhr.response);
+			} else {
+				reject();
+			}
+		}
+
+		xhr.open( 'GET' , url , true);
+		xhr.send();
+
+	});
+}
 
 const goods = [
-    { title: 'Shirt', price: 150 },
-    { title: 'Socks', price: 50 },
-    { title: 'Jacket', price: 350 },
-    { title: 'Shoes', price: 250 },
+    { title: 'shirt', price: 150 },
+    { title: 'socks', price: 50 },
+    { title: 'jacket', price: 350 },
+    { title: 'shoes', price: 250 },
   ];
   
   class GoodsItem {
@@ -60,10 +64,10 @@ const goods = [
     }
     render() {
       return `
-      <div class="basket__product">
+      <div class="basket__product" v-for='goods in filteredList'>
         <div class="img__box"><a href="#" class="img__box__link" ></a></div>
         <div class="text__box">
-            <p class="basket__text">${this.title}</p>
+            <p class="basket__text">{{ goods.title }}</p>
             <img src="img/low-star.png" alt="">
             <div class="basket__text">
                 <span class="basket__cost">1</span>
@@ -85,7 +89,15 @@ const goods = [
     }
     fetchGoods() {
       // асинхронная логика, получение с бека
-      this.goods = goods;
+	  this.goods = goods;
+	  makeGETRequest(`${API}/catalogData.json`)
+	  .then(data => {
+		  JSON.parse(data);
+	  })
+	  .catch(err =>{
+		  console.log(err);
+	  });
+	  
     }
     render() {
       let html = '';
@@ -125,3 +137,21 @@ let closeBtn = document.querySelectorAll('.fa-times-circle');
 closeBtn.forEach(function(btn) {
   btn.addEventListener('click', function (event) {} )
 });
+
+	new Vue({
+		el:'header',
+		data: {
+			title: '',
+			goods,
+
+		},
+		computed:{
+            filteredList: function(){
+                let prod = this.title;
+                return this.goods.filter(function (elem) {
+                    if(prod==='') return true;
+                    else return elem.title.indexOf(prod) > -1;
+                })
+            }
+        }
+	});

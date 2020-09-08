@@ -64,7 +64,7 @@ const goods = [
     }
     render() {
       return `
-      <div class="basket__product" v-for='goods in filteredList'>
+      <div class="basket__product" v-for='(goods, index) in filteredList' :key="index">
         <div class="img__box"><a href="#" class="img__box__link" ></a></div>
         <div class="text__box">
             <p class="basket__text">{{ goods.title }}</p>
@@ -72,7 +72,7 @@ const goods = [
             <div class="basket__text">
                 <span class="basket__cost">1</span>
                 <span class="basket__x">x</span>
-                <span class="basket__cost">${this.price}</span>
+                <span class="basket__cost">{{goods.price}}</span>
             </div>
         </div>
         <div class="basket__close">
@@ -137,6 +137,32 @@ let closeBtn = document.querySelectorAll('.fa-times-circle');
 closeBtn.forEach(function(btn) {
   btn.addEventListener('click', function (event) {} )
 });
+		//prod-list component
+	// Vue.component ('prod-list', {
+	// 	template:`
+	// 	<div class="basket__product" v-for='(goods, i) in filteredList' :key="index">
+	// 	<div class="img__box"><a href="#" class="img__box__link" ></a></div>
+	// 	<div class="text__box">
+	// 		<p class="basket__text">{{ goods.title }}</p>
+	// 		<img src="img/low-star.png" alt="">
+	// 		<div class="basket__text">
+	// 			<span class="basket__cost">1</span>
+	// 			<span class="basket__x">x</span>
+	// 			<span class="basket__cost">{{goods.price}}</span>
+	// 		</div>
+	// 	</div>
+	// 	<div class="basket__close">
+	// 		<a href="#"><i class="fas fa-times-circle basket__close"></i></a>
+	// 	</div>
+	// 	</div>
+	// 	`,
+	// 	props: {
+	// 		filteredList: Array
+	// 	},
+	// 	data() {
+	// 		return
+	// 	}
+	// });
 
 	new Vue({
 		el:'header',
@@ -154,4 +180,4 @@ closeBtn.forEach(function(btn) {
                 })
             }
         }
-	});
+  });

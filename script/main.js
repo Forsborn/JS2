@@ -139,7 +139,7 @@ closeBtn.forEach(function(btn) {
 });
 		//prod-list component
 	// Vue.component ('prod-list', {
-	// 	template:`
+	// 	template:/*html*/`
 	// 	<div class="basket__product" v-for='(goods, i) in filteredList' :key="index">
 	// 	<div class="img__box"><a href="#" class="img__box__link" ></a></div>
 	// 	<div class="text__box">
